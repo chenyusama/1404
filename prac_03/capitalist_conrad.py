@@ -9,15 +9,17 @@ The price should be displayed to the nearest cent (e.g. $33.59, not $33.59182329
 """
 import random
 
-MAX_INCREASE = 0.1  # 10%
+MAX_INCREASE = 0.175  # 17.5%
 MAX_DECREASE = 0.05  # 5%
-MIN_PRICE = 0.01
-MAX_PRICE = 1000.0
-INITIAL_PRICE = 10.0
+MIN_PRICE = 1
+MAX_PRICE = 100
+INITIAL_PRICE = 10
 number_of_days = 0
+OUTPUT_FILE = "price.txt"
 
+out_file = open(OUTPUT_FILE, 'w')
 price = INITIAL_PRICE
-print(f"Starting price: ${price:,.2f}")
+print("Starting price: ${:,.2f}".format(price), file=out_file)
 
 while MIN_PRICE <= price <= MAX_PRICE:
     price_change = 0
@@ -34,4 +36,6 @@ while MIN_PRICE <= price <= MAX_PRICE:
 
     price *= (1 + price_change)
     number_of_days = number_of_days+1
-    print(f"On day {number_of_days} price is ${price:,.2f}")
+    print("On day {} price is ${:,.2f}".format(number_of_days, price), file=out_file)
+
+out_file.close()
