@@ -13,10 +13,11 @@ Q - Quit """
 
 FILENAME = "books.csv"
 
-TITLE_POSITION = 0
-AUTHOR_POSITION = 1
-PAGE_POSITION = 2
-REQUIRE_POSITION = 3
+"""location of file information"""
+TITLE = 0
+AUTHOR = 1
+PAGE = 2
+REQUIRE = 3
 
 MINIMUM_PAGE_NUMBER = 0
 TYPES_OF_BOOK_DETAIL = 4
@@ -29,7 +30,7 @@ def main():
     book_file = open(FILENAME, "r")
     books = load_book(book_file)
     book_file.close()
-    books.sort(key=itemgetter(AUTHOR_POSITION, TITLE_POSITION))
+    books.sort(key=itemgetter(AUTHOR, TITLE))
 
     print("{} books loaded".format(len(books)))
     print(MENU)
@@ -65,7 +66,7 @@ def save_book_information(books):
     out_file = open(FILENAME, "w")
     book_information = ""
     for book in range(len(books)):
-        books[book][PAGE_POSITION] = str(books[book][PAGE_POSITION])
+        books[book][PAGE] = str(books[book][PAGE])
     for book in range(len(books)):
         book_information += ",".join(books[book])
         book_information += "\n"
@@ -76,10 +77,10 @@ def save_book_information(books):
 def display_added_message(books):
     """Display book added message."""
     added_book = len(books) - 1
-    title = books[added_book][TITLE_POSITION]
-    author = books[added_book][AUTHOR_POSITION]
-    pages = books[added_book][PAGE_POSITION]
-    print(f"{title} by {author}, ({pages} pages) added to Reading Tracker")
+    title = books[added_book][TITLE]
+    author = books[added_book][AUTHOR]
+    pages = books[added_book][PAGE]
+    print("{} by {}, ({} pages) added to Reading Tracker".format(title, author, pages))
 
 
 def get_book():
@@ -114,7 +115,7 @@ def handle_text_input(input_name):
     input_value = None
     while not is_valid_input:
         try:
-            input_value = input(f"{input_name} ")
+            input_value = input("{}".format(input_name))
             if input_value == "":
                 raise ValueError
             is_valid_input = True
@@ -128,14 +129,14 @@ def mark_book(books, marked_book):
     if not determine_book_state(books, marked_book - 1):
         print("That book is already completed")
     else:
-        books[marked_book - 1][REQUIRE_POSITION] = "c"
+        books[marked_book - 1][REQUIRE] = "c"
         display_marked_message(books, marked_book)
 
 
 def display_marked_message(books, marked_book):
     """Display the book is completed after mark the book."""
-    print(f"{books[marked_book - 1][TITLE_POSITION]} by "
-          f"{books[marked_book - 1][AUTHOR_POSITION]} completed!")
+    print(f"{books[marked_book - 1][TITLE]} by "
+          f"{books[marked_book - 1][AUTHOR]} completed!")
 
 
 def handle_book_number_input(input_name, books):
@@ -181,7 +182,7 @@ def display_pages_left_to_read(books):
     page_number = count_pages_left(books)
     required_book = count_required_book(books)
     if required_book > 0:
-        print(f"You need to read {page_number} pages in {required_book} books.")
+        print("You need to read {} pages in {} books.".format(page_number, required_book))
     else:
         print("No books left to read. Why not add a new book?")
 
@@ -189,8 +190,8 @@ def display_pages_left_to_read(books):
 def display_book(books):
     for book in range(len(books)):
         star = determine_star_state(books, book)
-        print(f"{star}{book + 1}. {books[book][TITLE_POSITION]:<39} by "
-              f"{books[book][AUTHOR_POSITION]:<18} {books[book][PAGE_POSITION]:>3} pages")
+        print(f"{star}{book + 1}. {books[book][TITLE]:<40} by "
+              f"{books[book][AUTHOR]:<20} {books[book][PAGE]:>5} pages")
 
 
 def determine_star_state(books, book_number):
@@ -203,7 +204,7 @@ def determine_star_state(books, book_number):
 
 def determine_book_state(books, book_number):
     """Determine whether the book is required."""
-    return books[book_number][REQUIRE_POSITION] == "r"
+    return books[book_number][REQUIRE] == "r"
 
 
 def load_book(book_file):
@@ -212,7 +213,7 @@ def load_book(book_file):
     for line in book_file:
         books.append(line.strip().split(","))
     for book in range(len(books)):
-        books[book][PAGE_POSITION] = int(books[book][PAGE_POSITION])
+        books[book][PAGE] = int(books[book][PAGE])
     return books
 
 
