@@ -36,7 +36,6 @@ def get_filename():
     except FileNotFoundError:
         print("Please enter a correct filename")
 
-
 # def close_file():
     #try:
         # .close()
@@ -45,15 +44,11 @@ def get_filename():
         # print("you have not loaded the file")
 
 def display_projects(load_projects):
-    projects = []
-    load_projects.readline()
-    for line in load_projects:
-        parts = line.strip().split()
-        project = Project(parts[0:-4], parts[-4], int(parts[-3]), float(parts[-2]), int(parts[-1]))
-        projects.append(project)
-
+    complete_project = []
+    incomplete_project = []
     for project in projects:
-        print(project)
+        if p
+
 
 
 
